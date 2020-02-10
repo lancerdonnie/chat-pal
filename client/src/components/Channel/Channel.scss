@@ -1,0 +1,30 @@
+.channel {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  .rooms {
+    background-color: grey;
+    flex: 1;
+    ul {
+      cursor: pointer;
+      list-style-type: none;
+    }
+  }
+  .chats {
+    flex: 5;
+    position: relative;
+    background-color: black;
+    overflow: auto;
+    p {
+      color: white;
+    }
+    h4 {
+      color: white;
+    }
+    .chatinp {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+    }
+  }
+}

@@ -1,0 +1,19 @@
+welcome to chat pal
+please enter your name and a channel to join
+color purple
+
+main
+component for typing and sending message bottom
+auto scroll to bottom
+chatbox
+private channel on the left with friends online and offline
+join another room
+starred messages
+save messages in db
+component for message type
+emojis images links download video
+
+problems
+-realised not setting listeners in mounting stage creates new listeners everytime it runs
+
+
