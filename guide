@@ -16,4 +16,4 @@ emojis images links download video
 problems
 -realised not setting listeners in mounting stage creates new listeners everytime it runs
 
-
+if u go back from channel double emits happen

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { submit } from '../../redux/actions/appActions';
 import { connect } from 'react-redux';
+import socket from '../../socket';
 
 const Home = props => {
   useEffect(() => {
     if (props.name !== null) {
+      socket.emit('usrm', props.name);
       props.history.push(`/channel`);
     }
   }, [props.name]);

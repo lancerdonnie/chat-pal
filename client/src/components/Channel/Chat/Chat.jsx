@@ -3,21 +3,16 @@ import socket from '../../../socket';
 
 const Chat = props => {
   useEffect(() => {
-    setMessages([]);
-    socket.emit('joinroom', { name: props.name, room: props.room });
-    // socket.on('receivemessage', newMessage => {
-    //   setMessages([...messages, newMessage]);
-    // });
-  }, []);
+    socket.emit('joinroom', { name: props.name, room: props.obj });
+  }, [props.room]);
 
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
   const handleChange = e => {
     setMessage(e.target.value);
   };
   const handleSubmit = e => {
     e.preventDefault();
-    props.submit(message);
+    props.submit(message, props.obj);
     setMessage('');
   };
   return (

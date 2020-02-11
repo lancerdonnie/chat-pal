@@ -1,14 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './App.css';
-import { Route, Switch, Link } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Home from './components/Home/Home';
 import Channel from './components/Channel/Channel';
 import Test from './components/Test/Test';
 import { Provider } from 'react-redux';
 import store from './store';
-import socket from './socket';
+import {
+  receiveRoomMessage,
+  receiveMessage,
+  getRooms,
+  getUserRooms
+} from './redux/actions/appActions';
 
 function App() {
+  store.dispatch(receiveRoomMessage());
+  store.dispatch(receiveMessage());
+  store.dispatch(getUserRooms());
   return (
     <div className='App'>
       <Provider store={store}>

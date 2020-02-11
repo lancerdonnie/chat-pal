@@ -6,8 +6,8 @@ const withMessage = Component => {
   const NewComp = props => {
     const [data, setData] = useState();
     useEffect(() => {
-      socket.on('receivemessage', newMessage => {
-        setData(newMessage);
+      socket.on('receivemessage', ({ message }) => {
+        setData(message);
       });
       socket.on('receiveroommessage', ({ room, message }) => {
         setData(message);

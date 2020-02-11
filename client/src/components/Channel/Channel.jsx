@@ -1,52 +1,64 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './Channel.scss';
 import Chat from './Chat/Chat';
-import { receiveRoomMessage, addRoom } from '../../redux/actions/appActions';
+import AddNewRoom from './AddNewRoom/AddNewRoom';
+import {
+  addRoom,
+  addNewRoom,
+  joinToRoom
+} from '../../redux/actions/appActions';
 import socket from '../../socket';
 
 const Channel = props => {
   useEffect(() => {
+    console.log('receive roomies effect');
     if (props.name === null) props.history.push('/');
-    else {
-      props.receiveRoomMessage();
-    }
   }, []);
   const [show, setShow] = useState(false);
   const [room, setRoom] = useState('');
+  const [id, setId] = useState('');
   const makeroom = e => {
     setRoom(e.target.getAttribute('name'));
-    setShow(false);
-    props.addRoom(e.target.getAttribute('name'));
+    //create room with messages store
+    setId(e.target.getAttribute('uid'));
+    props.addRoom(e.target.getAttribute('uid'));
     setShow(true);
   };
-  const handleSubmit = message => {
-    console.log('1time');
-    socket.emit(`sendroommessage`, { message, room });
+  const handleSubmit = (message, obj) => {
+    socket.emit(`sendroommessage`, { message, room: obj });
   };
   return (
     <div>
       <h3>welcome {props.name}</h3>
+      <AddNewRoom
+        name={props.name}
+        addNewRoom={props.addNewRoom}
+        joinToRoom={props.joinToRoom}
+      />
       <div className='channel'>
         <div className='rooms'>
           <ul>
-            <li name='main' onClick={makeroom}>
-              main
-            </li>
-            <li name='bees' onClick={makeroom}>
-              bees
-            </li>
-            <li>mango</li>
-            <li>trash</li>
-            <li>loyal</li>
+            {props.roomList.map((x, i) => {
+              return (
+                <li key={i} name={x.name} uid={x.id} onClick={makeroom}>
+                  {x.name}
+                  <br />
+                  {x.id}
+                </li>
+              );
+            })}
           </ul>
         </div>
+
         {show && (
           <Chat
-            messages={props.rooms.find(rm => rm.room === room)}
+            messages={props.rooms.find(rm => rm.room === id)}
             name={props.name}
             room={room}
+            obj={props.roomList.find(rm => {
+              return rm.id === id;
+            })}
             submit={handleSubmit}
           />
         )}
@@ -58,17 +70,18 @@ const Channel = props => {
 const mapStatetoProps = state => {
   return {
     name: state.app.name,
-    rooms: state.app.rooms
+    rooms: state.app.rooms,
+    roomList: state.app.userRooms
   };
 };
 const mapDispatchtoProps = dispatch => {
   return {
-    receiveRoomMessage: () => dispatch(receiveRoomMessage()),
-    addRoom: room => dispatch(addRoom(room))
+    addRoom: room => dispatch(addRoom(room)),
+    addNewRoom: (name, room) => dispatch(addNewRoom(name, room)),
+    joinToRoom: (name, id, roomName) => {
+      dispatch(joinToRoom(name, { id, roomName }));
+    }
   };
 };
 
-export default connect(
-  mapStatetoProps,
-  mapDispatchtoProps
-)(withRouter(Channel));
+export default connect(mapStatetoProps, mapDispatchtoProps)(Channel);

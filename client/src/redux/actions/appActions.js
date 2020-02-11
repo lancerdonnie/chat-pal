@@ -1,24 +1,44 @@
 import socket from '../../socket';
-
+//1
 export const submit = data => async dispatch => {
   dispatch({
     type: 'SUBMIT',
     payload: data
   });
 };
-export const receiveRoomMessage = data => async dispatch => {
+//4
+export const receiveRoomMessage = () => async dispatch => {
   socket.on(`receiveroommessage`, ({ room, message }) => {
-    console.log(message, room);
+    console.log('receiveroommessage');
     dispatch({
       type: 'ADDROOMMESSAGE',
       payload: { room, message }
     });
   });
 };
+//3
+export const receiveMessage = () => async dispatch => {
+  socket.on(`receivemessage`, ({ room, message }) => {
+    dispatch({
+      type: 'ADDMESSAGE',
+      payload: { room, message }
+    });
+  });
+};
+//2
+export const getUserRooms = () => async dispatch => {
+  socket.on(`userrooms`, rooms => {
+    console.log(rooms);
+    dispatch({
+      type: 'GETUSERROOMS',
+      payload: rooms
+    });
+  });
+};
+
 export const addRoom = room => async (dispatch, getStore) => {
-  console.log('adding room');
   const isRoom = getStore().app.rooms.find(x => {
-    return x.name === room;
+    return x.room === room;
   });
   if (!isRoom) {
     dispatch({
@@ -26,4 +46,12 @@ export const addRoom = room => async (dispatch, getStore) => {
       payload: room
     });
   }
+};
+export const addNewRoom = (name, room) => async dispatch => {
+  console.log(name, room);
+  socket.emit('addtoroom', { name, roomName: room });
+};
+export const joinToRoom = (name, room) => async dispatch => {
+  console.log(name, room);
+  socket.emit('jointoroom', { name, room });
 };
