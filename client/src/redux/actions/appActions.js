@@ -1,6 +1,7 @@
 import socket from '../../socket';
 //1
 export const submit = data => async dispatch => {
+  socket.emit('getonlineusers', { message: data.name });
   dispatch({
     type: 'SUBMIT',
     payload: data
@@ -22,6 +23,14 @@ export const receiveMessage = () => async dispatch => {
     dispatch({
       type: 'ADDMESSAGE',
       payload: { room, message }
+    });
+  });
+};
+export const getOnline = () => async dispatch => {
+  socket.on(`receiveonlineusers`, ({ message }) => {
+    dispatch({
+      type: 'ONLINE',
+      payload: message
     });
   });
 };

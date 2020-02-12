@@ -16,6 +16,7 @@ const Channel = props => {
     if (props.name === null) props.history.push('/');
   }, []);
   const [show, setShow] = useState(false);
+  const [showFab, setShowFab] = useState(false);
   const [room, setRoom] = useState('');
   const [id, setId] = useState('');
   const makeroom = e => {
@@ -31,12 +32,26 @@ const Channel = props => {
   return (
     <div>
       <h3>welcome {props.name}</h3>
-      <AddNewRoom
-        name={props.name}
-        addNewRoom={props.addNewRoom}
-        joinToRoom={props.joinToRoom}
-      />
+      {showFab && (
+        <AddNewRoom
+          name={props.name}
+          addNewRoom={props.addNewRoom}
+          joinToRoom={props.joinToRoom}
+          setShowFab={() => {
+            setShowFab(false);
+          }}
+        />
+      )}
       <div className='channel'>
+        <div className='online'>
+          <h3>Online Users</h3>
+          <ul>
+            {props.online.map((user, i) => {
+              if (user.user === props.name) return;
+              return <li key={i}>{user.user}</li>;
+            })}
+          </ul>
+        </div>
         <div className='rooms'>
           <ul>
             {props.roomList.map((x, i) => {
@@ -63,6 +78,14 @@ const Channel = props => {
           />
         )}
       </div>
+      <div
+        onClick={() => {
+          setShowFab(!showFab);
+        }}
+        className='fab'
+      >
+        <i className='fas fa-plus'></i>
+      </div>
     </div>
   );
 };
@@ -71,7 +94,8 @@ const mapStatetoProps = state => {
   return {
     name: state.app.name,
     rooms: state.app.rooms,
-    roomList: state.app.userRooms
+    roomList: state.app.userRooms,
+    online: state.app.online
   };
 };
 const mapDispatchtoProps = dispatch => {

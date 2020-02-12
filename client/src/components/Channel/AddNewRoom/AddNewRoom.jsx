@@ -17,20 +17,22 @@ const AddNewRoom = props => {
   const handleSubmit = e => {
     e.preventDefault();
     props.addNewRoom(props.name, input);
+    props.setShowFab();
     setInput('');
   };
   const handleSubmit2 = e => {
     e.preventDefault();
     props.joinToRoom(props.name, input2, input3);
+    props.setShowFab();
     setInput2('');
   };
   return (
-    <div>
-      <form className='chatinp' onSubmit={handleSubmit}>
+    <div className='newroom'>
+      <form className='chatinp2' onSubmit={handleSubmit}>
         <input value={input} onChange={handleChange} type='text' />
-        <button type='submit'>create room</button>
+        <button type='submit'>Create channel</button>
       </form>
-      <form className='chatinp' onSubmit={handleSubmit2}>
+      <form className='chatinp3' onSubmit={handleSubmit2}>
         <input
           placeholder='enter room id'
           value={input2}
@@ -43,8 +45,9 @@ const AddNewRoom = props => {
           onChange={handleChange3}
           type='text'
         />
-        <button type='submit'>add chat</button>
+        <button type='submit'>Add chat</button>
       </form>
+      <i onClick={props.setShowFab} className='fas fa-times'></i>
     </div>
   );
 };

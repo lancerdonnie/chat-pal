@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { submit } from '../../redux/actions/appActions';
 import { connect } from 'react-redux';
 import socket from '../../socket';
+import './Home.scss';
 
 const Home = props => {
   useEffect(() => {
@@ -11,8 +12,7 @@ const Home = props => {
     }
   }, [props.name]);
   const [form, setForm] = useState({
-    name: '',
-    channel: ''
+    name: ''
   });
 
   const handleChange = e => {
@@ -27,12 +27,11 @@ const Home = props => {
     props.submit(form);
   };
   return (
-    <div>
-      <p>Welcome to chat app</p>
+    <div className='home'>
+      <h2>Welcome to chat app</h2>
       <p>Please enter your name</p>
       <form onSubmit={handleSubmit}>
         <input onChange={handleChange} name='name' type='text' />
-        {/* <input onChange={handleChange} name='channel' type='text' /> */}
         <button type='submit'>Enter</button>
       </form>
     </div>
@@ -41,7 +40,6 @@ const Home = props => {
 
 const mapStatetoProps = state => {
   return {
-    // room: state.app.currentRoom
     name: state.app.name
   };
 };

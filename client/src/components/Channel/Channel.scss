@@ -2,6 +2,14 @@
   display: flex;
   height: 100vh;
   width: 100vw;
+  .online {
+    background-color: orange;
+    color: white;
+    flex: 1;
+    ul {
+      list-style-type: none;
+    }
+  }
   .rooms {
     background-color: grey;
     flex: 1;
@@ -26,5 +34,56 @@
       bottom: 0;
       left: 0;
     }
+  }
+}
+.newroom {
+  border-radius: 0.7rem;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: coral;
+  padding: 20px;
+  input {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    outline: none;
+    border: none;
+    margin-right: 10px;
+  }
+  button {
+    border-radius: 0.5rem;
+
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+  }
+  .chatinp3 {
+    margin-top: 10px;
+  }
+  i {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    color: white;
+  }
+}
+
+.fab {
+  position: fixed;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+  background-color: blue;
+  color: white;
+  bottom: 20px;
+  left: 20px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  i {
+    font-size: 1.3rem;
   }
 }

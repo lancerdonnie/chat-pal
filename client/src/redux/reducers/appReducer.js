@@ -1,7 +1,8 @@
 const initialState = {
   name: null,
   rooms: [],
-  userRooms: []
+  userRooms: [],
+  online:[]
 };
 
 const appReducer = (state = initialState, action) => {
@@ -38,6 +39,11 @@ const appReducer = (state = initialState, action) => {
       return {
         ...state,
         userRooms: action.payload
+      };
+    case 'ONLINE':
+      return {
+        ...state,
+        online: action.payload
       };
 
     default:

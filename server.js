@@ -3,11 +3,9 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const uuidv4 = require('uuid/v4');
 
-const rooms = [
-  { name: 'main', id: uuidv4() },
-  { name: 'bees', id: uuidv4() }
-];
-const users = [{ name: 'jide', rooms: [...rooms] }];
+const rooms = [{ name: 'main', id: uuidv4() }];
+const users = [{ name: 'test', rooms: [...rooms] }];
+let online = [];
 
 const checkUser = name => {
   return users.some(user => {
@@ -24,7 +22,6 @@ const checkRoom = (name, room) => {
     }
   });
 };
-// const addRoom=(roomname)
 const getUserRooms = name => {
   return users.find(user => {
     return user.name === name;
@@ -32,9 +29,25 @@ const getUserRooms = name => {
 };
 
 io.on('connection', socket => {
-  socket.emit('receivemessage', `${socket.id} has connected`);
-  socket.on('sendmessage', message => {
-    socket.broadcast.emit('receivemessage', message);
+  // socket.on('sendmessage', ({ message }) => {
+  //   online.push({ user: message, id: socket.id });
+  //   io.emit('receivemessage', {
+  //     message: online
+  //   });
+  // });
+  socket.on('getonlineusers', ({ message }) => {
+    online.push({ user: message, id: socket.id });
+    io.emit('receiveonlineusers', {
+      message: online
+    });
+  });
+  socket.on('disconnect', () => {
+    online = online.filter(user => {
+      return user.id !== socket.id;
+    });
+    socket.broadcast.emit('receivemessage', {
+      message: online
+    });
   });
   socket.on('joinroom', ({ name, room }) => {
     socket.join(room.id);
@@ -67,7 +80,6 @@ io.on('connection', socket => {
   });
   //1.get user rooms
   socket.on('usrm', name => {
-    console.log(users);
     const isUser = checkUser(name);
     if (isUser) {
       let usRooms = getUserRooms(name);

@@ -9,14 +9,15 @@ import store from './store';
 import {
   receiveRoomMessage,
   receiveMessage,
-  getRooms,
-  getUserRooms
+  getUserRooms,
+  getOnline
 } from './redux/actions/appActions';
 
 function App() {
   store.dispatch(receiveRoomMessage());
   store.dispatch(receiveMessage());
   store.dispatch(getUserRooms());
+  store.dispatch(getOnline());
   return (
     <div className='App'>
       <Provider store={store}>
