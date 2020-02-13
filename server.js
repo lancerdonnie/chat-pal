@@ -3,7 +3,7 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const uuidv4 = require('uuid/v4');
 
-const rooms = [{ name: 'main', id: uuidv4() }];
+const rooms = [{ name: 'General', id: uuidv4() }];
 const users = [{ name: 'test', rooms: [...rooms] }];
 let online = [];
 
@@ -35,6 +35,7 @@ io.on('connection', socket => {
   //     message: online
   //   });
   // });
+
   socket.on('getonlineusers', ({ message }) => {
     online.push({ user: message, id: socket.id });
     io.emit('receiveonlineusers', {
@@ -59,8 +60,12 @@ io.on('connection', socket => {
       message: `${name} has just joined room ${room.name}`
     });
   });
-  socket.on(`sendroommessage`, ({ message, room }) => {
-    io.in(room.id).emit(`receiveroommessage`, { room: room.id, message });
+  socket.on(`sendroommessage`, ({ message, room, from }) => {
+    io.in(room.id).emit(`receiveroommessage`, {
+      room: room.id,
+      message,
+      from
+    });
   });
   //2.register new user room
   socket.on('addtoroom', ({ name, roomName }) => {

@@ -8,12 +8,12 @@ export const submit = data => async dispatch => {
   });
 };
 //4
-export const receiveRoomMessage = () => async dispatch => {
-  socket.on(`receiveroommessage`, ({ room, message }) => {
+export const receiveRoomMessage = () => async (dispatch,getStore) => {
+  socket.on(`receiveroommessage`, ({ room, message, from }) => {
     console.log('receiveroommessage');
     dispatch({
       type: 'ADDROOMMESSAGE',
-      payload: { room, message }
+      payload: { room, message, type:getStore().app.name!==from? 'others':"you", from }
     });
   });
 };
@@ -22,12 +22,13 @@ export const receiveMessage = () => async dispatch => {
   socket.on(`receivemessage`, ({ room, message }) => {
     dispatch({
       type: 'ADDMESSAGE',
-      payload: { room, message }
+      payload: { room, message, type: 'general' }
     });
   });
 };
 export const getOnline = () => async dispatch => {
   socket.on(`receiveonlineusers`, ({ message }) => {
+    console.log(message);
     dispatch({
       type: 'ONLINE',
       payload: message

@@ -27,11 +27,11 @@ const Channel = props => {
     setShow(true);
   };
   const handleSubmit = (message, obj) => {
-    socket.emit(`sendroommessage`, { message, room: obj });
+    socket.emit(`sendroommessage`, { message, room: obj, from: props.name });
   };
   return (
-    <div>
-      <h3>welcome {props.name}</h3>
+    <div className='main'>
+      <h3>Welcome {props.name}</h3>
       {showFab && (
         <AddNewRoom
           name={props.name}
@@ -44,7 +44,7 @@ const Channel = props => {
       )}
       <div className='channel'>
         <div className='online'>
-          <h3>Online Users</h3>
+          <h4>Online Users</h4>
           <ul>
             {props.online.map((user, i) => {
               if (user.user === props.name) return;
@@ -53,6 +53,7 @@ const Channel = props => {
           </ul>
         </div>
         <div className='rooms'>
+          <h4>Chats</h4>
           <ul>
             {props.roomList.map((x, i) => {
               return (
@@ -66,7 +67,7 @@ const Channel = props => {
           </ul>
         </div>
 
-        {show && (
+        {show ? (
           <Chat
             messages={props.rooms.find(rm => rm.room === id)}
             name={props.name}
@@ -76,6 +77,8 @@ const Channel = props => {
             })}
             submit={handleSubmit}
           />
+        ) : (
+          <div className='chatalt'>Please click on a chat to start</div>
         )}
       </div>
       <div

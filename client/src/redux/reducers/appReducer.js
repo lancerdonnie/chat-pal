@@ -2,7 +2,7 @@ const initialState = {
   name: null,
   rooms: [],
   userRooms: [],
-  online:[]
+  online: []
 };
 
 const appReducer = (state = initialState, action) => {
@@ -16,7 +16,11 @@ const appReducer = (state = initialState, action) => {
     case 'ADDMESSAGE':
       const nState = state.rooms.map(x => {
         if (x.room === action.payload.room) {
-          x.messages.push(action.payload.message);
+          x.messages.push({
+            message: action.payload.message,
+            type: action.payload.type,
+            from: action.payload.from
+          });
         }
         return x;
       });
@@ -45,7 +49,6 @@ const appReducer = (state = initialState, action) => {
         ...state,
         online: action.payload
       };
-
     default:
       return state;
   }

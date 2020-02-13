@@ -1,42 +1,69 @@
-.channel {
-  display: flex;
+.main {
   height: 100vh;
   width: 100vw;
+  display: flex;
+  flex-direction: column;
+  background-color: darkmagenta;
+  color: white;
+  h3 {
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.3rem;
+  }
+}
+.channel {
+  min-height: 0px;
+  flex: 1;
+  display: flex;
+  h4 {
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 1rem;
+  }
   .online {
-    background-color: orange;
+    background-color: darkcyan;
     color: white;
     flex: 1;
-    ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & > ul {
+      flex: 1;
+      width: 100%;
       list-style-type: none;
+      text-align: center;
+      overflow-y: auto;
     }
   }
   .rooms {
-    background-color: grey;
+    display: flex;
+    flex-direction: column;
+    background-color: #b32656;
+    align-items: center;
+
     flex: 1;
     ul {
+      padding: 0 10px;
+
+      text-align: center;
+      width: 100%;
+      flex: 1;
       cursor: pointer;
       list-style-type: none;
+      overflow-y: auto;
     }
   }
-  .chats {
+  .chatalt {
     flex: 5;
-    position: relative;
-    background-color: black;
-    overflow: auto;
-    p {
-      color: white;
-    }
-    h4 {
-      color: white;
-    }
-    .chatinp {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    text-align: center;
   }
 }
 .newroom {
+  z-index: 5;
   border-radius: 0.7rem;
   position: fixed;
   left: 50%;
@@ -77,7 +104,7 @@
   cursor: pointer;
   background-color: blue;
   color: white;
-  bottom: 20px;
+  bottom: 33px;
   left: 20px;
   border-radius: 50%;
   display: flex;
@@ -85,5 +112,26 @@
   align-items: center;
   i {
     font-size: 1.3rem;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .channel {
+    flex-direction: column;
+    .rooms {
+      padding-bottom: 20px;
+    }
+  }
+  .newroom {
+    input {
+      margin-bottom: 10px;
+    }
+  }
+}
+@media only screen and (max-width: 768px) {
+  .channel {
+    .chats {
+      flex: 2;
+    }
   }
 }
