@@ -1,10 +1,9 @@
 const express = require('express');
-const app=express()
+const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(http);
 const uuidv4 = require('uuid/v4');
 const path = require('path');
-
 
 const rooms = [{ name: 'General', id: uuidv4() }];
 const users = [{ name: 'test', rooms: [...rooms] }];
@@ -107,11 +106,10 @@ io.on('connection', socket => {
 //   });
 // }
 app.use(express.static(path.join(__dirname, '../../build')));
-
-app.get('/', (req, res, next) => res.sendFile(__dirname, 'client', 'build', 'index.html'))
+app.get('/', (req, res, next) => res.sendFile(__dirname + './index.html'));
 
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, function() {
-  console.log('listening on port '+ PORT);
+  console.log('listening on port ' + PORT);
 });
