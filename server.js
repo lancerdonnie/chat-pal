@@ -2,6 +2,7 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const uuidv4 = require('uuid/v4');
+const path = require('path');
 
 const rooms = [{ name: 'General', id: uuidv4() }];
 const users = [{ name: 'test', rooms: [...rooms] }];
@@ -97,6 +98,15 @@ io.on('connection', socket => {
   });
 });
 
-http.listen(5000, function() {
-  console.log('listening on port 5000');
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
+const PORT = process.env.PORT || 5000;
+
+http.listen(PORT, function() {
+  console.log('listening on port ' + PORT);
 });
